@@ -1,0 +1,11 @@
+name: DynamicEventsPro
+version: 1.0.0
+main: com.moonveilcom.dynamicevents.DynamicEvents
+api-version: 1.19
+author: Gaeuly
+description: Added configurable and dynamic world events.
+commands:
+  dynamicevent:
+    description: main command for plugin DynamicEvents.
+    usage: /<command> [reload|start|stop|list]
+    aliases: [de, devents]
