@@ -1,0 +1,31 @@
+# =======================================================
+# DynamicEvents Pro Main Configuration
+# =======================================================
+
+# Check interval to start an event (in minutes).
+check-interval: 10
+
+# Chance for an event to occur each check (in percent, 0.0 - 100.0).
+event-chance: 20.0
+
+# Settings for each event
+events:
+  meteor-shower:
+    enabled: true
+    # Message to broadcast when the event starts.
+    start-message: "&6[World Event] &cThe sky darkens... A meteor shower is approaching!"
+    # Number of meteors that will fall.
+    meteor-count: 15
+    # Loot from meteors (chance in percent).
+    loot:
+      DIAMOND_ORE: 10.0
+      GOLD_ORE: 25.0
+      IRON_ORE: 65.0
+
+  horde-attack:
+    enabled: true
+    start-message: "&6[World Event] &4A deep rumble is heard... A horde of monsters is approaching!"
+    # Number of attack waves.
+    waves: 3
+    # Number of mobs per wave.
+    mobs-per-wave: 10

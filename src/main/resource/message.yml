@@ -1,0 +1,7 @@
+# Use & for color codes.
+prefix: "&6[DynamicEvents] &r"
+reload-success: "%prefix%&aConfiguration reloaded successfully!"
+no-permission: "%prefix%&cYou do not have permission to use this command."
+player-only: "%prefix%&cThis command can only be executed by a player."
+event-not-found: "%prefix%&cEvent named '%event%' was not found."
+event-started: "%prefix%&aEvent '%event%' has been started manually."

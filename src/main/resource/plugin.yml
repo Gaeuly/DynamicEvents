@@ -1,6 +1,6 @@
 name: DynamicEventsPro
 version: 1.0.0
-main: com.moonveilcom.dynamicevents.DynamicEvents
+main: com.gaeuly.dynamicevents.DynamicEvents
 api-version: 1.19
 author: Gaeuly
 description: Added configurable and dynamic world events.
