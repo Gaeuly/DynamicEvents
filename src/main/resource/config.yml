@@ -1,31 +1,44 @@
 # =======================================================
-# DynamicEvents Pro Main Configuration
+# Main Settings for DynamicEvents Pro
 # =======================================================
 
-# Check interval to start an event (in minutes).
+# Interval to check for starting an event (in minutes).
 check-interval: 10
 
-# Chance for an event to occur each check (in percent, 0.0 - 100.0).
+# Chance for an event to occur at each check (in percent, 0.0 - 100.0).
 event-chance: 20.0
+
+# (NEW) Minimum cooldown time between events (in minutes). Set to 0 to disable.
+global-cooldown: 30
+
+# (NEW) List of worlds where events are allowed. Leave empty to allow in all worlds.
+# world-whitelist: ["world", "world_nether"]
+world-whitelist: []
 
 # Settings for each event
 events:
   meteor-shower:
     enabled: true
-    # Message to broadcast when the event starts.
+    duration: 1 # (NEW) Duration of the event in minutes.
     start-message: "&6[World Event] &cThe sky darkens... A meteor shower is approaching!"
-    # Number of meteors that will fall.
     meteor-count: 15
-    # Loot from meteors (chance in percent).
     loot:
       DIAMOND_ORE: 10.0
       GOLD_ORE: 25.0
       IRON_ORE: 65.0
-
+  
   horde-attack:
     enabled: true
-    start-message: "&6[World Event] &4A deep rumble is heard... A horde of monsters is approaching!"
-    # Number of attack waves.
+    duration: 2 # (NEW) Duration of the event in minutes.
+    start-message: "&6[World Event] &4A distant rumble is heard... A horde of monsters approaches!"
     waves: 3
-    # Number of mobs per wave.
     mobs-per-wave: 10
+    
+  mysterious-eclipse: # (NEW) New event
+    enabled: true
+    duration: 3 # Duration in minutes
+    start-message: "&6[World Event] &5The sun disappears... A mysterious eclipse has begun!"
+    # Effects given to players when the eclipse ends
+    end-effects:
+      - "REGENERATION:1:20" # Format: EFFECT_NAME:LEVEL:DURATION_SECONDS
+      - "SPEED:2:30"

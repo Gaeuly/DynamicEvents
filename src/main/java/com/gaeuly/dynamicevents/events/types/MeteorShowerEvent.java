@@ -9,14 +9,15 @@ import org.bukkit.Material;
 import org.bukkit.entity.FallingBlock;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
-
 import java.util.Random;
 
 public class MeteorShowerEvent implements WorldEvent {
-
+    
     private final DynamicEvents plugin;
     private final Random random = new Random();
+    private BukkitTask task; // (BARU)
 
     public MeteorShowerEvent(DynamicEvents plugin) {
         this.plugin = plugin;
@@ -27,23 +28,27 @@ public class MeteorShowerEvent implements WorldEvent {
         return "MeteorShower";
     }
 
+    // (BARU) Implementasi metode dari interface
+    @Override
+    public int getDuration() {
+        return plugin.getConfigManager().getConfig().getInt("events.meteor-shower.duration", 1) * 60;
+    }
+
     @Override
     public void start(Player target) {
         String message = plugin.getConfigManager().getConfig().getString("events.meteor-shower.start-message");
         Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes('&', message));
-
+        
         int meteorCount = plugin.getConfigManager().getConfig().getInt("events.meteor-shower.meteor-count", 15);
-
-        new BukkitRunnable() {
+        
+        task = new BukkitRunnable() {
             private int meteorsFallen = 0;
-
             @Override
             public void run() {
                 if (meteorsFallen >= meteorCount) {
                     this.cancel();
                     return;
                 }
-                // Meteor spawn logic
                 Location playerLoc = target.getLocation();
                 double offsetX = (random.nextDouble() - 0.5) * 100;
                 double offsetZ = (random.nextDouble() - 0.5) * 100;
@@ -59,10 +64,20 @@ public class MeteorShowerEvent implements WorldEvent {
                 meteorsFallen++;
             }
         }.runTaskTimer(plugin, 60L, 20L);
+
+        // (BARU) Jadwalkan pemberhentian event sesuai durasi
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                stop();
+            }
+        }.runTaskLater(plugin, getDuration() * 20L);
     }
 
     @Override
     public void stop() {
-        // Logic to stop the event if needed
+        if (task != null && !task.isCancelled()) {
+            task.cancel();
+        }
     }
 }

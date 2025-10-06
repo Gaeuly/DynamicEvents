@@ -24,8 +24,7 @@ public class MainCommand implements TabExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (args.length == 0) {
-            // Show help message if no arguments provided
-            sender.sendMessage(plugin.getConfigManager().getMessage("prefix") + "Use /de [reload|start|list]");
+            sender.sendMessage(plugin.getConfigManager().getMessage("prefix") + "Gunakan /de [reload|start|list]");
             return true;
         }
 
@@ -37,7 +36,7 @@ public class MainCommand implements TabExecutor {
                     sender.sendMessage(plugin.getConfigManager().getMessage("no-permission"));
                     return true;
                 }
-                plugin.getConfigManager().loadConfigs();
+                plugin.reloadPlugin(); // (DIUBAH) Ini sekarang memuat ulang semuanya
                 sender.sendMessage(plugin.getConfigManager().getMessage("reload-success"));
                 break;
 
@@ -47,7 +46,7 @@ public class MainCommand implements TabExecutor {
                     return true;
                 }
                 if (args.length < 2) {
-                    sender.sendMessage(plugin.getConfigManager().getMessage("prefix") + "Usage: /de start <eventName> [playerName]");
+                    sender.sendMessage(plugin.getConfigManager().getMessage("prefix") + "Gunakan /de start <namaEvent> [namaPlayer]");
                     return true;
                 }
 
@@ -55,7 +54,7 @@ public class MainCommand implements TabExecutor {
                 if (args.length > 2) {
                     target = Bukkit.getPlayer(args[2]);
                     if (target == null) {
-                        sender.sendMessage(plugin.getConfigManager().getMessage("prefix") + "Player " + args[2] + " is not online.");
+                        sender.sendMessage(plugin.getConfigManager().getMessage("prefix") + "Player " + args[2] + " tidak online.");
                         return true;
                     }
                 } else {
@@ -75,11 +74,9 @@ public class MainCommand implements TabExecutor {
                     sender.sendMessage(plugin.getConfigManager().getMessage("event-not-found").replace("%event%", eventName));
                 }
                 break;
-
-            // You can add 'list' or 'stop' subcommands here later
-
+            
             default:
-                sender.sendMessage(plugin.getConfigManager().getMessage("prefix") + "Unknown command. Use /de help.");
+                sender.sendMessage(plugin.getConfigManager().getMessage("prefix") + "Perintah tidak dikenal. Gunakan /de help.");
                 break;
         }
         return true;
@@ -88,8 +85,7 @@ public class MainCommand implements TabExecutor {
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
         List<String> completions = new ArrayList<>();
-
-        // Tab complete for first argument
+        
         if (args.length == 1) {
             List<String> subCommands = Arrays.asList("reload", "start", "list");
             for (String sub : subCommands) {
@@ -97,21 +93,18 @@ public class MainCommand implements TabExecutor {
                     completions.add(sub);
                 }
             }
-        }
-        // Tab complete for second argument after 'start'
+        } 
         else if (args.length == 2 && args[0].equalsIgnoreCase("start")) {
-            // Get all registered event names
             List<String> eventNames = plugin.getEventManager().getRegisteredEvents().stream()
-                    .map(WorldEvent::getName)
-                    .collect(Collectors.toList());
-
-            for (String name : eventNames) {
-                if (name.toLowerCase().startsWith(args[1].toLowerCase())) {
+                                           .map(WorldEvent::getName)
+                                           .collect(Collectors.toList());
+                                           
+            for(String name : eventNames) {
+                if(name.toLowerCase().startsWith(args[1].toLowerCase())){
                     completions.add(name);
                 }
             }
         }
-        // Tab complete for third argument after 'start <eventName>'
         else if (args.length == 3 && args[0].equalsIgnoreCase("start")) {
             for (Player player : Bukkit.getOnlinePlayers()) {
                 if (player.getName().toLowerCase().startsWith(args[2].toLowerCase())) {

@@ -16,20 +16,15 @@ public final class DynamicEvents extends JavaPlugin {
     public void onEnable() {
         instance = this;
 
-        // 1. Load configuration files
         this.configManager = new ConfigManager(this);
-
-        // 2. Initialize the event manager
         this.eventManager = new EventManager(this);
 
-        // 3. Register event listeners
         getServer().getPluginManager().registerEvents(new MeteorListener(this), this);
 
-        // 4. Register command executor and tab completer
         getCommand("dynamicevent").setExecutor(new MainCommand(this));
         getCommand("dynamicevent").setTabCompleter(new MainCommand(this));
-
-        getLogger().info("DynamicEventsPro has been enabled!");
+        
+        getLogger().info("DynamicEventsPro v1.1.0 has been enabled!");
     }
 
     @Override
@@ -37,7 +32,12 @@ public final class DynamicEvents extends JavaPlugin {
         getLogger().info("DynamicEventsPro has been disabled!");
     }
 
-    // Getter methods to allow access from other classes
+    // (NEW) This method is called by MainCommand when '/de reload' is executed
+    public void reloadPlugin() {
+        getConfigManager().loadConfigs();
+        getEventManager().reload();
+    }
+
     public ConfigManager getConfigManager() {
         return configManager;
     }
@@ -45,7 +45,7 @@ public final class DynamicEvents extends JavaPlugin {
     public EventManager getEventManager() {
         return eventManager;
     }
-
+    
     public static DynamicEvents getInstance() {
         return instance;
     }

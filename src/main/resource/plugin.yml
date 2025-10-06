@@ -1,11 +1,20 @@
 name: DynamicEventsPro
-version: 1.0.0
+version: 1.1.0 # Version bumped
 main: com.gaeuly.dynamicevents.DynamicEvents
 api-version: 1.19
 author: Gaeuly
-description: Added configurable and dynamic world events.
+description: Adds configurable and dynamic world events.
+
 commands:
   dynamicevent:
-    description: main command for plugin DynamicEvents.
+    description: Main command for the DynamicEvents plugin.
     usage: /<command> [reload|start|stop|list]
     aliases: [de, devents]
+
+permissions: # (NEW) Added permission nodes
+  dynamicevents.admin.reload:
+    description: Allows reloading the config.
+    default: op
+  dynamicevents.admin.start:
+    description: Allows starting an event manually.
+    default: op
